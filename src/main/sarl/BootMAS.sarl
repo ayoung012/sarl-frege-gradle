@@ -1,0 +1,15 @@
+/**
+ * Class to boot up an agent controller
+ */
+import io.sarl.bootstrap.SRE
+
+class BootMAS {
+	def static main(args : String[]) : void {
+		val agentToLaunch = typeof(com.ayoung012.Agent)
+
+		// println(Hello.greeting(String.format("Loading SARL controller agent %s", agentToLaunch.getSimpleName)))
+		var bootstrap = SRE::getBootstrap
+		bootstrap.startAgent(agentToLaunch)
+	}
+
+}

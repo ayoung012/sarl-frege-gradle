@@ -1,0 +1,74 @@
+plugins {
+  id 'application'
+  id 'java-library'
+  id "org.xtext.xtend" version "4.0.0"
+  id 'org.xtext.builder' version '4.0.0'
+}
+
+application {
+    mainClass.set 'Hello'
+}
+run.environment 'JDK_JAVA_OPTIONS', '--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.logging/java.util.logging=ALL-UNNAMED'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo1.maven.org/maven2/'
+    }
+}
+
+configurations {
+    all {
+        resolutionStrategy {
+            force 'com.google.guava:guava:27.1-jre'
+        }
+    }
+    fregelang
+}
+
+dependencies {
+    implementation 'org.eclipse.xtend:org.eclipse.xtend.lib:2.30.0'
+    implementation 'io.sarl.lang:io.sarl.lang.core:0.12.0'
+    implementation 'io.sarl.maven:io.sarl.maven.sdk:0.12.0'
+    implementation 'io.janusproject:io.janusproject.kernel:3.0.12.0'
+
+    implementation 'org.frege-lang:frege:3.24.100.1:jdk8'
+    fregelang 'org.frege-lang:frege:3.24.100.1:jdk8'
+
+    xtextLanguages 'io.sarl.lang:io.sarl.lang.core:0.12.0'
+    xtextLanguages 'io.sarl.maven:io.sarl.maven.sdk:0.12.0'
+    xtextLanguages 'io.sarl.lang:io.sarl.lang:0.12.0'
+    xtextLanguages 'io.janusproject:io.janusproject.kernel:3.0.12.0'
+}
+
+task generateFrege(type: JavaExec) {
+    doFirst {
+        // rmDir 'build/frege'
+        // file('build/classes/java/main').mkdirs()
+    }
+    classpath = files(configurations.fregelang.asPath)
+    inputs.dir 'src/main/frege'
+    outputs.dir 'src/main/java'
+    mainClass = 'frege.compiler.Main'
+    args = [
+        '-d',
+        'src/main/java',
+        'src/main/frege'
+    ]
+}
+tasks.generateXtext.dependsOn tasks.generateFrege
+
+xtext {
+    languages {
+        sarl {
+            fileExtensions = ['sarl']
+            setup = 'io.sarl.lang.SARLStandaloneSetup'
+            generator.outlet.producesJava = true
+        }
+    }
+    sourceSets {
+        main {
+            srcDir 'src/main/sarl'
+        }
+    }
+}

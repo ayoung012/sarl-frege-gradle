@@ -1,0 +1,127 @@
+package com.ayoung012
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+import io.sarl.core.AgentSpawned
+
+agent Agent {
+    uses Lifecycle, Logging, DefaultContextInteractions, Schedules
+
+    var agents:int = 0
+    var pongs:int = 0
+	var totalAgents:int = 500
+
+    on Initialize {
+        setLoggingName("Agent")
+        info("Initialised")
+		for( var i : int = 0; i<totalAgents; i++) {
+			spawn(Agent3)
+		}
+        // spawn(Agent2)
+        // spawn(Agent3)
+    }
+
+    on AgentSpawned {
+        //info("Agent Spawned")
+        if (isLastAgent()) {
+            info("All {0} Agents Spawned", totalAgents)
+            emit(new E_Ping)
+        }
+    }
+
+	on E_Pong {
+		if (isLastPong()) {
+            info("All {0} Agents Ponged", totalAgents)
+			in(2000) [
+				emit(new E_AllPonged)
+				killMe
+			]
+		}
+	}
+
+	synchronized def isLastAgent() : boolean {
+		agents++
+		return agents >= totalAgents
+	}
+
+	synchronized def isLastPong() : boolean {
+		pongs++
+		return pongs >= totalAgents
+	}
+}
+
+agent Agent1 {
+    uses Lifecycle, Logging, DefaultContextInteractions
+
+    var events:int = 0
+
+    on Initialize {
+        setLoggingName("Agent1")
+        info("Initialised")
+    }
+
+    on E_Pong {
+        events ++
+        info("Pong Occurred: {0}", events)
+        emit(new E_Pung())
+        if (events > 5) {
+            info("Agent1 will Die")
+            killMe
+        }
+    }
+}
+
+agent Agent2 {
+    uses Lifecycle, Logging, DefaultContextInteractions
+
+    var events:int = 0
+
+    on Initialize {
+        setLoggingName("Agent2")
+        info("Initialised")
+    }
+
+    on E_Pung {
+        events ++
+        info("Pung Occurred: {0}", events)
+        emit(new E_Ping())
+        if (events > 5) {
+            info("Agent2 will Die")
+            killMe
+        }
+    }
+}
+
+agent Agent3 {
+    uses Lifecycle, Logging, DefaultContextInteractions
+
+    var events:int = 0
+
+    on Initialize {
+        setLoggingName("Agent3")
+        //info("Initialised")
+    }
+
+    on E_Ping {
+        events ++
+        //info("Ping Occurred: {0}", events)
+        emit(new E_Pong())
+        if (events > 5) {
+            info("Agent3 will Die")
+            killMe
+        }
+    }
+
+	on E_AllPonged {
+		//info("Dying")
+		killMe
+	}
+}
+
+event E_Ping
+event E_Pong
+event E_Pung
+event E_AllPonged

@@ -1,0 +1,10 @@
+module Hello where
+
+import Data.List
+
+greeting :: String -> String
+greeting friend = concat $ take 1 $ drop 100 $ iterate (++ "geegee") friend
+-- greeting friend = "Hello, " ++ friend ++ "!"
+
+main args = do
+    println $ greeting "Team"
