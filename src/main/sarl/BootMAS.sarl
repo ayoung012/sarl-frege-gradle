@@ -1,7 +1,7 @@
 /**
  * Class to boot up an agent controller
  */
-import io.sarl.bootstrap.SRE
+import io.sarl.lang.core.SRE
 
 class BootMAS {
 	def static main(args : String[]) : void {

@@ -20,25 +20,24 @@ repositories {
 configurations {
     all {
         resolutionStrategy {
-            force 'com.google.guava:guava:27.1-jre'
         }
     }
     fregelang
 }
 
 dependencies {
-    implementation 'org.eclipse.xtend:org.eclipse.xtend.lib:2.30.0'
-    implementation 'io.sarl.lang:io.sarl.lang.core:0.12.0'
-    implementation 'io.sarl.maven:io.sarl.maven.sdk:0.12.0'
-    implementation 'io.janusproject:io.janusproject.kernel:3.0.12.0'
+    implementation 'io.sarl.sre:sarl-sre:0.14.0'
+    implementation 'io.sarl.lang:core:0.14.0'
+    implementation 'org.eclipse.platform:org.eclipse.osgi:3.21.0'
+    compileOnly 'io.sarl.sdk:sdk:0.14.0'
+    implementation 'org.openjfx:javafx-fxml:21.0.4-ea+1'
+    implementation 'com.google.guava:guava:33.3.0-jre'
+
 
     implementation 'org.frege-lang:frege:3.24.100.1:jdk8'
     fregelang 'org.frege-lang:frege:3.24.100.1:jdk8'
 
-    xtextLanguages 'io.sarl.lang:io.sarl.lang.core:0.12.0'
-    xtextLanguages 'io.sarl.maven:io.sarl.maven.sdk:0.12.0'
-    xtextLanguages 'io.sarl.lang:io.sarl.lang:0.12.0'
-    xtextLanguages 'io.janusproject:io.janusproject.kernel:3.0.12.0'
+    xtextLanguages 'io.sarl.lang:compiler:0.14.0'
 }
 
 task generateFrege(type: JavaExec) {
