@@ -7,6 +7,9 @@ import io.sarl.api.core.Lifecycle
 import io.sarl.api.core.Logging
 import io.sarl.api.core.Schedules
 
+import frege.run8.Thunk
+import frege.Hello
+
 agent Agent {
     uses Lifecycle, Logging, DefaultContextInteractions, Schedules
 
@@ -108,6 +111,7 @@ agent Agent3 {
     on E_Ping {
         events ++
         //info("Ping Occurred: {0}", events)
+        info(Hello.greeting(Thunk.lazy("gee")));
         emit(new E_Pong())
         if (events > 5) {
             info("Agent3 will Die")

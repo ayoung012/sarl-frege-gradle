@@ -1,4 +1,4 @@
-module Hello where
+module frege.Hello where
 
 import Data.List
 

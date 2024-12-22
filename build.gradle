@@ -6,14 +6,13 @@ plugins {
 }
 
 application {
-    mainClass.set 'Hello'
+    mainClass = 'BootMAS'
 }
-run.environment 'JDK_JAVA_OPTIONS', '--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.logging/java.util.logging=ALL-UNNAMED'
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://repo1.maven.org/maven2/'
+        url  = 'https://repo1.maven.org/maven2/'
     }
 }
 
@@ -29,6 +28,7 @@ dependencies {
     implementation 'io.sarl.sre:sarl-sre:0.14.0'
     implementation 'io.sarl.lang:core:0.14.0'
     implementation 'org.eclipse.platform:org.eclipse.osgi:3.21.0'
+    implementation 'io.sarl.sre.janus:janus.kernel:3.0.14.0'
     compileOnly 'io.sarl.sdk:sdk:0.14.0'
     implementation 'org.openjfx:javafx-fxml:21.0.4-ea+1'
     implementation 'com.google.guava:guava:33.3.0-jre'
